@@ -1,0 +1,4 @@
+strace
+pstack
+
+tcpdump -As0 -i any port 80 and host ip
