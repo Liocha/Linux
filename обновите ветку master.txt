@@ -1,0 +1,14 @@
+# В вашей локальной копии переключитесь в ветку master
+git checkout master
+# Заберите изменения из репозитория Академии¹ (или academy)
+git pull academy master
+# Отправьте изменения ветки master в ваш форк на Гитхабе (или origin)
+git push origin master
+# Когда вы обновили master, создайте ветку для выполнения задания
+git checkout -b module1-task3
+
+        
+      
+¹ В academy должна быть ссылка на репозиторий Академии. Если его там нет, добавьте:
+
+git remote add academy git@github.com:htmlacademy-email/659273-play-html-1.git
