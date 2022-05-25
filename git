@@ -9,3 +9,6 @@ git push origin nameBranch
 git switch master
 git pull --rebase upstream master
 git push origin master
+
+#Склиеить комиты на текущей ветке 
+git rebase -i HEAD~3
