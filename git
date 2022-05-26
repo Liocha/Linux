@@ -1,5 +1,10 @@
+# Конфиг локально
 git config --local user.name name
 git config --local user.email example@examole.com
+
+# Посмотреть конфиг
+cat .git/config
+
 git remote -v
 git remote add upstream linkToUpstream
 git switch -c nameBranch | git branch nameBranch; git checkout nameBranch | git checkout -b nameBranch
@@ -10,7 +15,7 @@ git switch master
 git pull --rebase upstream master
 git push origin master
 
-#Склиеить комиты на текущей ветке 
+# Склеить комиты на текущей ветке (-3 от head начиная с текущего)
 git rebase -i HEAD~3
 
 # Для лога полезные ключи
