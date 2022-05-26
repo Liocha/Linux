@@ -27,6 +27,8 @@ git config  alias.sayhi '!echo "hello"; echo "from git"'
 
 # Примеры алиасов тут https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/git/git.plugin.zsh
 
+# Посмотреть информацию о коммите
+git show --pretty=fuller
 
 git remote -v
 git remote add upstream linkToUpstream
@@ -48,3 +50,16 @@ git log --graph --decorate --pretty=oneline --abbrev-commit
 bash: bash-git-prompt
 
 # Собрать кастомное приветсвие можно например через bashrc generator online
+
+# stash
+git stash
+git stash pop
+
+# Перенос веток "вручную" , нужно быть на другой ветке
+git branch -f master 54a4 
+git checkout -B master 54a4
+
+# Достать старый вариант файла из определенного коммита, после этого можно сбросить индекс командой git reset index.html
+git checkout 54a4 index.html 
+
+
