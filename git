@@ -30,6 +30,9 @@ git config  alias.sayhi '!echo "hello"; echo "from git"'
 # Посмотреть информацию о коммите
 git show --pretty=fuller
 
+# Посмотреть польностью файл из коммита
+git show @~:index.html
+
 git remote -v
 git remote add upstream linkToUpstream
 git switch -c nameBranch | git branch nameBranch; git checkout nameBranch | git checkout -b nameBranch
@@ -42,6 +45,9 @@ git push origin master
 
 # Склеить комиты на текущей ветке (-3 от head начиная с текущего)
 git rebase -i HEAD~3
+
+# Отменить ребейз в котором возникл конфликты
+git rebase --abort
 
 # Для лога полезные ключи
 git log --graph --decorate --pretty=oneline --abbrev-commit
@@ -59,7 +65,14 @@ git stash pop
 git branch -f master 54a4 
 git checkout -B master 54a4
 
+# Вернуть после переноса ветки 
+git branch -f master ORIG_HEAD
+
 # Достать старый вариант файла из определенного коммита, после этого можно сбросить индекс командой git reset index.html
 git checkout 54a4 index.html 
 
-
+# Cимволы ~, ^, @, поиск с :/
+~ это ссылка на родителя , например git show HEAD~ (родитель коммита на который указывает HEAD)
+HEAD~~ можно заменить на HEAD~2 , HEAD~~~ на HEAD~3 (количество тильд)
+Вместо HEAD можно писать @ , HEAD~2 можно заменить @~2
+:/ поиск по слову, например git show :/словодляпоиска
