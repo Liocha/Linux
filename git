@@ -12,3 +12,6 @@ git push origin master
 
 #Склиеить комиты на текущей ветке 
 git rebase -i HEAD~3
+
+#Для лога полезные ключи
+git log --graph --decorate --pretty=oneline --abbrev-commit
