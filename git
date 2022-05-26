@@ -1,9 +1,32 @@
+# Список опций команды ключ -h
+git config -h
+
+# Больше информации по команде. Листалка LESS, команда '/' поиск , 'n' поиск вперед 'shift n' поиск назад. 'q' выход из листалки. 
+git help config
+
 # Конфиг локально
 git config --local user.name name
 git config --local user.email example@examole.com
 
+# Удалить параметр конфига
+git config --unset user.name
+
 # Посмотреть конфиг
 cat .git/config
+git config -l
+
+# Связывание текстовых редакторов с Git, все примеры тут https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git
+git config --global core.editor "code --wait"
+
+# Алиасы для git. Простой пример
+git config --global alias.c config
+git config --global alias.c 'config --global'
+
+# Алиасы для git. Если поставить первым символом !, то можно делать системные команды одна за другой
+git config  alias.sayhi '!echo "hello"; echo "from git"'
+
+# Примеры алиасов тут https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/git/git.plugin.zsh
+
 
 git remote -v
 git remote add upstream linkToUpstream
