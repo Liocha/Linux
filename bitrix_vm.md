@@ -8,3 +8,8 @@ bitrix vm
 /etc/php.d/
 mv 20-xmlwriter.ini.disabled 20-xmlwriter.ini
 ```
+3. Vardumper
+
+```bash
+composer require --dev symfony/var-dumper
+```
