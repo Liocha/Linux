@@ -1,0 +1,176 @@
+Настройке Laravel и развертыванию через Git. Вот пошаговая инструкция:
+
+### 1. **Установка необходимых пакетов**:
+   Убедись, что у тебя установлены все необходимые пакеты для работы с Laravel.
+
+   ```bash
+   sudo apt install php php-cli php-fpm php-mysql php-xml php-mbstring php-zip php-curl unzip git
+   ```
+
+### 2. **Установка Composer**:
+   Composer — это менеджер зависимостей для PHP. Установи его следующим образом:
+
+   ```bash
+   curl -sS https://getcomposer.org/installer | php
+   sudo mv composer.phar /usr/local/bin/composer
+   ```
+
+   Проверь установку:
+
+   ```bash
+   composer --version
+   ```
+
+### 3. **Создание проекта Laravel**:
+   - Перейди в директорию, где ты хочешь создать проект Laravel (например, в `/var/www`):
+
+     ```bash
+     cd /var/www
+     ```
+
+   - Создай новый проект Laravel:
+
+     ```bash
+     composer create-project --prefer-dist laravel/laravel your-project-name
+     ```
+
+   - После завершения установки перейди в директорию проекта:
+
+     ```bash
+     cd your-project-name
+     ```
+
+### 4. **Настройка прав доступа**:
+   Убедись, что директории `storage` и `bootstrap/cache` имеют правильные права доступа:
+
+   ```bash
+   sudo chown -R www-data:www-data storage bootstrap/cache
+   sudo chmod -R 775 storage bootstrap/cache
+   ```
+
+### 5. **Настройка файла `.env`**:
+   - Скопируй файл `.env.example` в `.env`:
+
+     ```bash
+     cp .env.example .env
+     ```
+
+   - Открой файл `.env` и настрой параметры подключения к базе данных и другие конфигурации:
+
+     ```bash
+     nano .env
+     ```
+
+### 6. **Генерация ключа приложения**:
+   Сгенерируй ключ приложения:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+### 7. **Настройка веб-сервера**:
+   Если ты используешь Nginx, создай конфигурационный файл для своего приложения:
+
+   ```bash
+   sudo nano /etc/nginx/sites-available/your-project-name
+   ```
+
+   Вставь следующее содержимое:
+
+   ```nginx
+   server {
+       listen 80;
+       server_name your-domain.com;  # Замените на свой домен или IP
+
+       root /var/www/your-project-name/public;  # Путь к папке public
+
+       index index.php index.html index.htm;
+
+       location / {
+           try_files $uri $uri/ /index.php?$query_string;
+       }
+
+       location ~ \.php$ {
+           include snippets/fastcgi-php.conf;
+           fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  # Убедитесь, что версия PHP верная
+           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+           include fastcgi_params;
+       }
+
+       location ~ /\.ht {
+           deny all;
+       }
+   }
+   ```
+
+   Затем создай символическую ссылку в директории `sites-enabled`:
+
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/your-project-name /etc/nginx/sites-enabled/
+   ```
+
+   Проверь конфигурацию Nginx на ошибки:
+
+   ```bash
+   sudo nginx -t
+   ```
+
+   Перезагрузите Nginx:
+
+   ```bash
+   sudo systemctl restart nginx
+   ```
+
+### 8. **Настройка Git**:
+   - Убедитесь, что Git установлен на сервере (если ещё не установлен):
+     ```bash
+     sudo apt install git
+     ```
+
+   - В директории проекта инициализируй репозиторий Git:
+
+     ```bash
+     git init
+     ```
+
+   - Добавь удалённый репозиторий:
+
+     ```bash
+     git remote add origin your-repo-url.git
+     ```
+
+   - Если у тебя уже есть проект в репозитории, ты можешь клонировать его:
+
+     ```bash
+     git clone your-repo-url.git
+     ```
+
+### 9. **Настройка автоматического развертывания**:
+   Если ты хочешь настроить автоматическое развертывание при каждом коммите в репозиторий, можно использовать хуки Git или инструменты CI/CD (например, GitHub Actions).
+
+   - Создай файл `deploy.sh` в корне проекта:
+
+     ```bash
+     nano deploy.sh
+     ```
+
+   - Вставь в него команды для развертывания:
+
+     ```bash
+     #!/bin/bash
+
+     cd /var/www/your-project-name
+     git pull origin main  # Замените на вашу ветку
+     composer install --no-interaction --prefer-dist --optimize-autoloader
+     php artisan migrate --force
+     ```
+
+   - Сделай файл исполняемым:
+
+     ```bash
+     chmod +x deploy.sh
+     ```
+
+   - Можно настроить веб-хук на сервере, чтобы автоматически запускать этот скрипт при пушах в репозиторий.
+
+Теперь твой сервер готов к развертыванию Laravel-приложения через Git. Если у тебя возникнут вопросы или нужна помощь на каком-то этапе, дай знать!
